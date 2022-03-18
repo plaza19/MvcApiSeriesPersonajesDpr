@@ -1,0 +1,46 @@
+﻿<a class="btn btn-outline-primary" href="/ApiCliente">Atrás</a>
+
+<h1 id="serieheader"></h1>
+
+<ul class="list-group" id="listcont">
+</ul>
+
+
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const params = Object.fromEntries(urlSearchParams.entries());
+            
+
+            var apiUrl = "https://apiseriespersonajesdpr.azurewebsites.net";
+            var request = "/api/Personajes/" + params.idSerie;
+
+            $.ajax({
+                "url": apiUrl + request,
+                "method": "GET",
+                "contentType": "application/json",
+                "success": function (data) {
+                    $.each(data, function (index, personaje) {
+                        var html = ""
+                        html += "<li class='list-group-item'>"
+                        html += "<div>";
+                        html += "<h2>" + personaje.nombrePersonaje + "</h2>";
+                        html += "<h5>Imagen:</h5>";
+                        html += "<img src='" + personaje.imagen + "' style= 'height:400px; width:270px'/>";
+                        html += "</div>"
+                        html += "</li>"
+                        $("#listcont").append(html);
+                    }
+                    );
+                }
+            })
+
+
+
+        });
+
+    </script>
+} 

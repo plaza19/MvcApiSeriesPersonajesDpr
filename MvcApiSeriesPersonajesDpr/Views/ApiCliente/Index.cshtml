@@ -1,0 +1,95 @@
+﻿<h1>Consumo API en cliente</h1>
+
+<h3>Insertar Serie</h3>
+<form>
+    <label>Nombre Serie</label>
+    <input class="form-control" type="text" id="cajanombre" />
+    <label>Puntuacion</label>
+    <input type="number" class="form-control" id="cajapuntuacion" />
+    <label>Año</label>
+    <input type="number" class="form-control" id="cajayear" />
+    <label>Imagen</label>
+    <input class="form-control" type="text" id="cajaimagen" />
+
+    <button class="btn btn-primary" id="btninsertar">Guardar Serie</button>
+</form>
+
+<ul class="list-group" id="listcont">
+
+</ul>
+
+
+
+
+@section Scripts {
+
+<script>
+    $(document).ready(function () {
+
+        var apiUrl = "https://apiseriespersonajesdpr.azurewebsites.net"
+        var request = "/api/Series"
+
+
+
+
+        $("#btninsertar").click(function () {
+            var data = JSON.stringify({
+                "idSerie": 0,
+                "nombreSerie": $("#cajanombre").val(),
+                "imagen": $("#cajaimagen").val(),
+                "puntuacion": $("#cajapuntuacion").val(),
+                "año": $("#cajayear").val()
+            });
+            $.ajax({
+                "url": apiUrl + request,
+                "method": "POST",
+                "contentType": "application/json",
+                "data": data,
+                "success": function (data) {
+                    alert("serie insertada");
+                }
+            })
+        })
+
+
+
+
+
+
+
+
+
+
+        $.ajax({
+            "url": apiUrl + request,
+            "method": "GET",
+            "contentType": "application/json",
+            "success": function (data) {
+                $.each(data, function (index, serie) {
+                    console.log(serie);
+                    var html = ""
+                    html += "<li class='list-group-item'>"
+                    html += "<div>";
+                    html += "<h2>" + serie.nombreSerie + "</h2>";
+                    html += "<h5>Año</h5>";
+                    html += "<p>" + serie.año + "<p>";
+                    html += "<h5>Puntiación</h5>";
+                    html += "<p>" + serie.puntuacion + "<p>";
+                    html += "<h5>Imagen:</h5>";
+                    html += "<img src='" + serie.imagen + "' style= 'height:400px; width:270px'/>";
+                    html += "<a class='btn btn-primary' href='/ApiCliente/Personajes/?idSerie=" + serie.idSerie + "'>" + "Ver Personajes" + "</a>";
+                    html += "<a class='btn btn-danger' id='btnEliminar_" + serie.idSerie + "' href='/ApiCliente/EliminarSerie/?idSerie=" + serie.idSerie + "'>" + "Eliminar serie" + "</a>";
+                    html += "</div>"
+                    html += "</li>"
+                    $("#listcont").append(html);
+
+                     
+                }
+                );
+            }
+        })
+
+    });
+</script>
+
+}

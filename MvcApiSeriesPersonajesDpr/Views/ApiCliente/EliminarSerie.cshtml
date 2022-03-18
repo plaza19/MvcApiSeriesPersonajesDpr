@@ -1,0 +1,23 @@
+﻿@section Scripts {
+
+    <script>
+    $(document).ready(function () {
+
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+
+        var apiUrl = "https://apiseriespersonajesdpr.azurewebsites.net"
+        var request = "/api/Series/" + params.idSerie
+        $.ajax({
+            "url": apiUrl + request,
+            "method": "DELETE",
+            "contentType": "application/json",
+            "success": function () {
+                window.location.replace('/ApiCliente');
+            }
+        });
+
+    });
+    </script>
+
+}

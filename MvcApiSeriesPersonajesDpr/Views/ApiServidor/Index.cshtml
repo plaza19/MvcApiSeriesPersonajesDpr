@@ -1,0 +1,85 @@
+﻿@model IEnumerable<MvcApiSeriesPersonajesDpr.Models.Serie>
+
+@{
+    ViewData["Title"] = "Index";
+    List<Personaje> personajes = ViewBag.person as List<Personaje>;
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<h3>Mover Personaje</h3>
+<form method="post" action="ApiServidor/MoverPersonaje">
+
+    <select name="IdSerie" required>
+        @foreach (Serie s in Model)
+        {
+            <option value="@s.IdSerie">@s.NombreSerie</option>
+        }
+    </select>
+
+    <select name="IdPersonaje" required>
+        @foreach (Personaje p in personajes)
+        {
+            <option value="@p.IdPersonaje">@p.NombrePersonaje</option>
+        }
+    </select>
+
+    <button type="submit">Mover Personaje</button>
+
+</form>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdSerie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreSerie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Imagen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Puntuacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Año)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdSerie)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreSerie)
+            </td>
+            <td>
+                <img src="@item.Imagen" style="height:400px; width:270px"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Puntuacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Año)
+            </td>
+            <td>
+                <a asp-action="EditarSerie" asp-controller="ApiServidor" asp-route-idSerie="@item.IdSerie">EditarSerie</a> |
+                <a asp-action="DetallesSerie" asp-controller="ApiServidor" asp-route-idSerie="@item.IdSerie">Details</a> |
+                <a asp-action="PersonajesSerie" asp-controller="ApiServidor" asp-route-idSerie="@item.IdSerie">Personajes</a> |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
